@@ -17,16 +17,16 @@ class Barber(threading.Thread):
         while True:
             with self.condition:
                 if not self.customers:
-                    print "{} is sleepy...\n".format(self)
+                    print "{} is sleeping.".format(self)
                     self.condition.wait()
                 if self.should_stop.is_set():
                     return
                 if not self.customers:
-                    print "{} woke up, but has no customers.\n".format(self)
+                    print "{} woke up, but has no customers.".format(self)
                     continue
 
                 customer = self.customers.pop()
-                print "{} is waking up to service {}\n".format(self, customer)
+                print "{} is waking up to service {}.".format(self, customer)
             customer.snipSnip()
 
 
@@ -38,7 +38,7 @@ class Customer(threading.Thread):
         time.sleep(self.WAIT * random.random())
 
     def snipSnip(self):
-        print "{} is getting cut.\n".format(self)
+        print "{} is getting a haircut cut.".format(self)
         self.wait()
         self.serviced.set()
 
@@ -49,10 +49,9 @@ class Customer(threading.Thread):
             Barber.customers.append(self)
             Barber.condition.notify(1)
 
-        print "{} is sleeping\n".format(self)
-
+        print "{} has fallen asleep while waiting.".format(self)
         self.serviced.wait()
-        print "{} is leaving!\n".format(self)
+        print "{} is leaving!".format(self)
 
 
 def main():
@@ -68,12 +67,12 @@ def main():
         c = Customer()
         customers.append(c)
         c.start()
-        print "{} has arrived\n".format(c)
+        print "{} has arrived.".format(c)
 
     for c in customers:
         c.join()
 
-    print "\nNo more customers left!\n"
+    print "\nNo more customers left!"
 
     Barber.should_stop.set()
 
